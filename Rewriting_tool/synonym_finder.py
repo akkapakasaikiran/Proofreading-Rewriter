@@ -8,6 +8,21 @@ import nltk
 import csv
 from nltk.tokenize import word_tokenize
 
+lingo = {"arbit": ["arbitrary",],
+        "bandi": ["girl",],
+        "chamka": ["understood", "understand",],
+        "DAC": ["Disciplinary Action Committee",],
+        "dadda": ["Dual Degree student",],
+        "DoSA": ["Dean of Student Affairs",],
+        "enthu": ["enthusiasm", "enthusiastic"],
+        "farra": ["FR",],
+        "freshie": ["first year student",],
+        "fundae": ["tips", "tricks", "teeps and treekz",],
+        "infi": ["infinite", "infinitely",],
+        "insti": ["institute",],
+        "junta": ["people",],
+        "polt": ["politics",],}
+
 result = string.punctuation
 
 result = result.replace(' ', '')
@@ -58,7 +73,9 @@ output_words2 = []
 tag_list = ['DT','PRP','VBD','IN','CC','VBZ','VBP']
 #print(word_list)
 for i in range(len(word_list)):
-    if(nltk.pos_tag(word_tokenize(word_list[i]))[0][1] in tag_list):
+    if word_list[i] in lingo:
+        print("{}:{}".format(word_list[i],lingo[word_list[i]]))
+    elif(nltk.pos_tag(word_tokenize(word_list[i]))[0][1] in tag_list):
         x = []
     elif(word_list[i] not in punctuation_list):
         a = "https://api.datamuse.com/words?rel_syn=" + word_list[i]
