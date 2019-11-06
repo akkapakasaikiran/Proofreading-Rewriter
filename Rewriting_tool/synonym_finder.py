@@ -55,7 +55,7 @@ word_list = word_tokenize(input_words2)
 print(word_list)
 output_words2 = []
 
-tag_list = ['DT','PRP','VBD','IN','CC','VBZ']
+tag_list = ['DT','PRP','VBD','IN','CC','VBZ','VBP']
 #print(word_list)
 for i in range(len(word_list)):
     if(nltk.pos_tag(word_tokenize(word_list[i]))[0][1] in tag_list):
@@ -87,8 +87,9 @@ for i in range(len(word_list)):
         x = jprint(dict_final,word_list[i])
      #   print("x computed")
       #  print(x)
-        if(len(x)==0):
-            x.append(word_list[i])
+        #if(len(x)==0):
+         #   x.append(word_list[i])
+       # print(x)
         y = []
         for syn in x:
         #	print("search started")
@@ -102,9 +103,12 @@ for i in range(len(word_list)):
         			if len(row) > 0:
         				spl = row.split()
         				val += int(spl[len(spl)-6])
-        	if val>10000:
+        	if val>3000:
         		y.append(syn)
-        print("{}:{}".format(word_list[i],y))
+
+        	
+        if(not(len(y)==0)):
+            print("{}:{}".format(word_list[i],y))
 
 
 
