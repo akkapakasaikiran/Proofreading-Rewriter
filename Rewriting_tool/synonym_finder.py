@@ -40,7 +40,8 @@ def jprint(obj,orig_word):
         l.append(distro['word']);
        # print(l)
     return l
-
+def P(variate):
+    return variate[1]
 
 def only_sentences(body):
     lst1 = body.rsplit('.', 1);
@@ -65,9 +66,9 @@ input_words2 = only_sentences(fullfile2)
 #input_words2 = input_words2.replace("\'","\"")
 #input_words2 = word_tokenize(input_words2)
 #print(input_words2)
-
+print(input_words2)
 word_list = word_tokenize(input_words2)
-print(word_list)
+#print(word_list)
 output_words2 = []
 
 tag_list = ['DT','PRP','VBD','IN','CC','VBZ','VBP']
@@ -121,11 +122,13 @@ for i in range(len(word_list)):
         				spl = row.split()
         				val += int(spl[len(spl)-6])
         	if val>3000:
-        		y.append(syn)
+        		y.append([syn,val])
 
-        	
+        
+        y = sorted(y,key=P)
+
         if(not(len(y)==0)):
-            print("{}:{}".format(word_list[i],y))
+            print("{}:{}".format(word_list[i],[x[0] for x in y]))
 
 
 
