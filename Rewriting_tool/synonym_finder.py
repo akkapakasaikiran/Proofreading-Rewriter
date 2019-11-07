@@ -21,7 +21,8 @@ lingo = {"arbit": ["arbitrary",],
         "infi": ["infinite", "infinitely",],
         "insti": ["institute",],
         "junta": ["people",],
-        "polt": ["politics",],}
+        "polt": ["politics",],
+        "bc": ["branch change",]}
 
 result = string.punctuation
 
@@ -79,6 +80,7 @@ for i in range(len(word_list)):
     elif(nltk.pos_tag(word_tokenize(word_list[i]))[0][1] in tag_list):
         x = []
     elif(word_list[i] not in punctuation_list):
+       # print("coming")
         a = "https://api.datamuse.com/words?rel_syn=" + word_list[i]
         word1 = ""
         word2 = ""
@@ -89,11 +91,11 @@ for i in range(len(word_list)):
             a = a + "&rc=" + word_list[i+1]
             word3 = word_list[i+1]
         else:
-            if(word_list[i-1] not in punctuation_list):
+            if(word_list[i-1] not in punctuation_list and word_list[i-1] not in lingo.keys()):
                 a = a + "&lc=" + word_list[i-1]
                 word1 = word_list[i-1]
 
-            if(word_list[i+1] not in punctuation_list):
+            if(word_list[i+1] not in punctuation_list and word_list[i+1] not in lingo.keys()):
                 a = a + "&rc=" + word_list[i+1]
                 word3 = word_list[i+1]
         a = a + "&max=4"
@@ -109,6 +111,7 @@ for i in range(len(word_list)):
          #   x.append(word_list[i])
        # print(x)
         y = []
+    #    print(x)
         for syn in x:
         #	print("search started")
         	b = "https://api.phrasefinder.io/search?corpus=eng-us&query=" + urllib.parse.quote(word1 + " " + syn + " " + word3) + "&format=tsv"
@@ -121,12 +124,11 @@ for i in range(len(word_list)):
         			if len(row) > 0:
         				spl = row.split()
         				val += int(spl[len(spl)-6])
-        	if val>3000:
+        	if val>5000:
         		y.append([syn,val])
 
         
-        y = sorted(y,key=P)
-
+        y = sorted(y,key=P,reverse=True)
         if(not(len(y)==0)):
             print("{}:{}".format(word_list[i],[x[0] for x in y]))
 
