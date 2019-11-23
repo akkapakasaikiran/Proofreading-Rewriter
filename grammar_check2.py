@@ -6,6 +6,7 @@ import sys
 import re
 import nltk
 import csv
+from frequency_finder import frequency_finder
 from nltk.corpus import cmudict
 def starts_with_vowel_sound(word, pronunciations=cmudict.dict()):
     for syllables in pronunciations.get(word, []):
@@ -46,14 +47,42 @@ for i in range(len(word_list)):
 			if(sounds_like_a_vowel(word_after) or starts_with_vowel_sound(word_after)):
 				#print(word_after)
 				if(word == "an"):
-					continue
+					val1 = frequency_finder(word_bef,"an",word_after)
+					val2 = frequency_finder(word_bef,"the",word_after)
+					if(val1>1000):
+						continue
+					else:
+						if(val1>=val2):
+							continue
+						else:
+							correction[i] = "the " + word_after
 				else:
-					correction[i] = "an " + word_after
+					val1 = frequency_finder(word_bef,"an",word_after)
+					val2 = frequency_finder(word_bef,"the",word_after)
+					if(val1>=val2):
+						correction[i] = "an " + word_after
+					else:
+						correction[i] = "the " + word_after
+						
 			else:
 				if(word == "a"):
-					continue
+					val1 = frequency_finder(word_bef,"a",word_after)
+					val2 = frequency_finder(word_bef,"the",word_after)
+					if(val1>1000):
+						continue
+					else:
+						if(val1>=val2):
+							continue
+						else:
+							correction[i] = "the " + word_after
 				else:
-					correction[i] = "a " + word_after
+					val1 = frequency_finder(word_bef,"a",word_after)
+					val2 = frequency_finder(word_bef,"the",word_after)
+					if(val1>=val2):
+						correction[i] = "a " + word_after
+					else:
+						correction[i] = "the " + word_after
+					
 
 for k,v in correction.items():
 	print("Correction in word no. {} is {}. ".format(k,v))
