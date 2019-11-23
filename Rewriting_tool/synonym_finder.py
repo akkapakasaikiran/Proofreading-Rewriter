@@ -124,7 +124,7 @@ for i in range(len(word_list)):
         			if len(row) > 0:
         				spl = row.split()
         				val += int(spl[len(spl)-6])
-        	if val>5000:
+        	if val>3000:
         		y.append([syn,val])
 
         

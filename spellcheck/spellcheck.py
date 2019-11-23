@@ -2,9 +2,14 @@ import sys
 import re
 import enchant
 import math
+from collections import Counter
 
 #global variable
 word = ""
+
+def words(text): return re.findall(r'\w+', text.lower())
+
+WORDS = Counter(words(open('big.txt').read()))
 
 # US and UK dictionaries as enchant dict objects
 d_uk = enchant.Dict("en_UK")
@@ -33,7 +38,11 @@ def valid_word(word_inp):
 	return d_uk.check(word_inp) or d_us.check(word_inp) or d_us.check(cap_word) or d_uk.check(cap_word)
 
 def P(variate):
-	return damerau_levenshtein_distance(word, variate);
+	#print("{}:{}".format(variate,WORDS[variate]/sum(WORDS.values())))
+	if(WORDS[variate]==0):
+		return 0.6*damerau_levenshtein_distance(word,variate)
+	else:
+		return 0.5*damerau_levenshtein_distance(word, variate) + 0.0001*sum(WORDS.values())/WORDS[variate] 
 
 def correction():
 	"Most probable spelling corrections for word."
