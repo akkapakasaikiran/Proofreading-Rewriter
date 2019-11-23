@@ -6,7 +6,9 @@ import sys
 import re
 import nltk
 import csv
-from frequency_finder import frequency_finder
+from frequency_finder import frequency_finder2
+from frequency_finder import frequency_finder1
+
 from nltk.corpus import cmudict
 def starts_with_vowel_sound(word, pronunciations=cmudict.dict()):
     for syllables in pronunciations.get(word, []):
@@ -36,53 +38,93 @@ correction = {}
 article_list = {'a',"an"}
 #print(starts_with_vowel_sound("anonymous"))
 for i in range(len(word_list)):
-	word = word_list[i];
+	word = word_list[i].lower();
+	print(word)
 	if(word in article_list):
 		word_bef = word_list[i-1]
 		word_after = word_list[i+1]
 		if(word in article_list):
 			#print(word)
 			#print(word_after)
+
 			#print(sounds_like_a_vowel(word_after))
 			if(sounds_like_a_vowel(word_after) or starts_with_vowel_sound(word_after)):
 				#print(word_after)
-				if(word == "an"):
-					val1 = frequency_finder(word_bef,"an",word_after)
-					val2 = frequency_finder(word_bef,"the",word_after)
-					if(val1>1000):
-						continue
-					else:
-						if(val1>=val2):
+				if(word_bef in punctuation_list):
+					if(word == "an"):
+						val1 = frequency_finder2("an",word_after)
+						val2 = frequency_finder2("the",word_after)
+						if(val1>1000):
 							continue
+						else:
+							if(val1>=val2):
+								continue
+							else:
+								correction[i] = "the " + word_after
+					else:
+						val1 = frequency_finder2("an",word_after)
+						val2 = frequency_finder2("the",word_after)
+						if(val1>=val2):
+							correction[i] = "an " + word_after
 						else:
 							correction[i] = "the " + word_after
 				else:
-					val1 = frequency_finder(word_bef,"an",word_after)
-					val2 = frequency_finder(word_bef,"the",word_after)
-					if(val1>=val2):
-						correction[i] = "an " + word_after
+					if(word == "an"):
+						val1 = frequency_finder1(word_bef,"an",word_after)
+						val2 = frequency_finder1(word_bef,"the",word_after)
+						if(val1>1000):
+							continue
+						else:
+							if(val1>=val2):
+								continue
+							else:
+								correction[i] = "the " + word_after
 					else:
-						correction[i] = "the " + word_after
+						val1 = frequency_finder1(word_bef,"an",word_after)
+						val2 = frequency_finder1(word_bef,"the",word_after)
+						if(val1>=val2):
+							correction[i] = "an " + word_after
+						else:
+							correction[i] = "the " + word_after
 						
 			else:
-				if(word == "a"):
-					val1 = frequency_finder(word_bef,"a",word_after)
-					val2 = frequency_finder(word_bef,"the",word_after)
-					if(val1>1000):
-						continue
-					else:
-						if(val1>=val2):
+				if(word_bef in punctuation_list):
+					if(word == "an"):
+						val1 = frequency_finder2("a",word_after)
+						val2 = frequency_finder2("the",word_after)
+						if(val1>1000):
 							continue
+						else:
+							if(val1>=val2):
+								continue
+							else:
+								correction[i] = "the " + word_after
+					else:
+						val1 = frequency_finder2("a",word_after)
+						val2 = frequency_finder2("the",word_after)
+						if(val1>=val2):
+							correction[i] = "a " + word_after
 						else:
 							correction[i] = "the " + word_after
 				else:
-					val1 = frequency_finder(word_bef,"a",word_after)
-					val2 = frequency_finder(word_bef,"the",word_after)
-					if(val1>=val2):
-						correction[i] = "a " + word_after
+					if(word == "a"):
+						val1 = frequency_finder1(word_bef,"a",word_after)
+						val2 = frequency_finder1(word_bef,"the",word_after)
+						if(val1>1000):
+							continue
+						else:
+							if(val1>=val2):
+								continue
+							else:
+								correction[i] = "the " + word_after
 					else:
-						correction[i] = "the " + word_after
-					
+						val1 = frequency_finder1(word_bef,"a",word_after)
+						val2 = frequency_finder1(word_bef,"the",word_after)
+						if(val1>=val2):
+							correction[i] = "a " + word_after
+						else:
+							correction[i] = "the " + word_after
+						
 
 for k,v in correction.items():
 	print("Correction in word no. {} is {}. ".format(k,v))
