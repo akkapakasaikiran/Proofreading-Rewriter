@@ -7,6 +7,7 @@ is_verb_full.remove('being')
 is_verb_full.remove('been')
 is_verb_pos = is_verb_full[:5]
 is_verb_neg = is_verb_full[5:]
+
 def changetense3(l,c,r):
 	cur_freq = frequency_finder1(l,c,r)
 	if cur_freq > 1500 :

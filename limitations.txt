@@ -1,2 +1,5 @@
 Grammar Check :
 Eg input : PLaying is an art. Playing is 
+Whats left: spell check contextual
+			time reduction. tokenize boht time le rha hai
+			This ,these ,those .	

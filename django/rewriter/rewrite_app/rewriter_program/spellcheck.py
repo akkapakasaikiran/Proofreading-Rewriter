@@ -40,7 +40,7 @@ def valid_word(word_inp):
 	cap_word = word_inp.capitalize()
 	return d_uk.check(word_inp) or d_us.check(word_inp) or d_us.check(cap_word) or d_uk.check(cap_word)
 
-def P(variate):
+def P(word,variate):
 	#print("{}:{}".format(variate,WORDS[variate]/sum(WORDS.values())))
 	if(WORDS[variate]==0):
 		return 0.6*damerau_levenshtein_distance(word,variate)

@@ -13,6 +13,7 @@ import verb
 # import demo_pro
 import interro
 import article
+import demopro
 
 
 result = string.punctuation
@@ -38,7 +39,8 @@ print(pos_list)
 
 #print(word_list)
 correction = {}
-article_list = {'a',"an"}
+article_list = ['a',"an"]
+demo_list = ['this','that','those','these']
 
 for i in range(len(word_list)-1):
 	word = word_list[i].lower();
@@ -57,7 +59,6 @@ for i in range(len(word_list)-1):
 			new_word = verb.changetense2(word_before,word)
 		else:
 			new_word = verb.changetense3(word_bef,word,word_after)
-
 		if(word == new_word):
 			continue
 		else:
@@ -76,6 +77,16 @@ for i in range(len(word_list)-1):
 			correction[i] = new_word
 	elif(i==0 or pos_list[i-1][1] == 'WRB' and word_bef in punctuation_list):
 		new_word = interro.change_new3(word,word_after)
+		if(word == new_word):
+			continue
+		else:
+			correction[i] = new_word
+	elif(pos_list[i][1]=='DT' and word in demo_list):
+		if(i==0 or word_bef in punctuation_list):
+			new_word = demopro.change_before(word,word_after)
+		elif(word_after in punctuation_list):
+			new_word = demopro.change_after(word_bef,word)
+
 		if(word == new_word):
 			continue
 		else:
