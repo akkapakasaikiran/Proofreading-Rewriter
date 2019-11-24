@@ -105,4 +105,4 @@ def articlechecker(word_bef,word,word_after):
 					return "the"
 					
 
-print(articlechecker("is","an","country"))
+#print(articlechecker("is","an","country"))
