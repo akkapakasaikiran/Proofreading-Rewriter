@@ -47,15 +47,6 @@ def P(variate):
 def correction(word):
 	"Most probable spelling corrections for word."
 	possibilities=variations(word)
-	# possibilities2 = set()
-	# global word 
-	# real_word = word
-	# for x in possibilities :
-	# 	word = x
-	# 	y = variations()
-	# 	possibilities2 = set(list(possibilities2) + list(y)) 
-	# possibilities = set(list(possibilities) + list(possibilities2))
-	# word = real_word
 	return list(filter(valid_word,sorted(possibilities, key=P)))
 
 def euclidean_distance(a,b):
@@ -146,9 +137,3 @@ def spell_suggestions(words):
 	if(num_wrong_words==0): print("Congrats on writing a completely error free peice of text!")
 
 spell_suggestions(input_words)
-
-# word = "ddecidef"
-# print("Input word: {}".format(word))
-# print("Suggestions:{}".format(correction()))
-# for x in sorted(filter(valid_word,variations()),key=P):
-# 	print(x, edit_distance(word,x))

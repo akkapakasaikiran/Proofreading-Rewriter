@@ -1,2 +1,2 @@
 Grammar Check :
-Eg input : PLaying is an art.
+Eg input : PLaying is an art. Playing is 

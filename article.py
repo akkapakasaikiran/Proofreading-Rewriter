@@ -1,20 +1,24 @@
-import requests
-import urllib
-import json
+# import requests
+# import urllib
+# import json
 import string
-import sys
-import re
+from time import time
+start_time = time()
 import nltk
-import csv
+print(time()-start_time)
 from frequency_finder import frequency_finder2
 from frequency_finder import frequency_finder1
-
+print(time()-start_time)
 result = string.punctuation
+
+print(time()-start_time)
 
 result = result.replace(' ', '')
 punctuation_list = []
 for i in range(len(result)):
     punctuation_list.append(result[i])
+
+print(time()-start_time)
 
 from nltk.corpus import cmudict
 def starts_with_vowel_sound(word, pronunciations=cmudict.dict()):
@@ -22,9 +26,15 @@ def starts_with_vowel_sound(word, pronunciations=cmudict.dict()):
         return syllables[0][-1].isdigit()
 #def starts_with_vowel_sound(word, pronunciations=cmudict.dict()):
 pronunciations = cmudict.dict()
+
+print(time()-start_time)
+
 def sounds_like_a_vowel(word):
 	for syllables in pronunciations.get('word', []):
 		return(syllables[0][-1].isdigit())
+
+print(time()-start_time)
+
 
 def articlechecker(word_bef,word,word_after):
 	if(sounds_like_a_vowel(word_after) or starts_with_vowel_sound(word_after)):
@@ -104,4 +114,7 @@ def articlechecker(word_bef,word,word_after):
 					return "the"
 						
 
+print(time()-start_time)
 
+
+print(articlechecker("is","an","country"))
