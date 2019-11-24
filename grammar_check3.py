@@ -5,28 +5,16 @@ import string
 import sys
 import re
 import nltk
-from time import time
-start_time = time()
-
-#import csv
-
-print(time()-start_time)
-
 
 from frequency_finder import frequency_finder2
 from frequency_finder import frequency_finder1
 
-print(time()-start_time)
-
-#from nltk import pos_tag
-#from nltk import word_tokenize
 import verb
 # import demo_pro
-# import interro_pro
+import interro
 import article
 
 
-print(time()-start_time)
 result = string.punctuation
 
 result = result.replace(' ', '')
@@ -35,22 +23,17 @@ for i in range(len(result)):
     punctuation_list.append(result[i])
 vowels = ['a','e','i','o','u'];
 
-print(time()-start_time)
 
 input_file = sys.argv[1];
 f = open(input_file);
 
-print(time()-start_time)
 
 word_string = f.read()
 
-print(time()-start_time)
 
 word_list = nltk.word_tokenize(word_string);
 pos_list = nltk.pos_tag(word_list)
 print(pos_list)
-
-print(time()-start_time)
 
 
 #print(word_list)
@@ -69,6 +52,7 @@ for i in range(len(word_list)-1):
 			correction[i] = new_word 
 	elif(pos_list[i][1][:2] == 'VB'):
 		#print("\n"+word)
+		print("verb ", word)
 		if(word_after in punctuation_list):
 			new_word = verb.changetense2(word_before,word)
 		else:
@@ -78,7 +62,28 @@ for i in range(len(word_list)-1):
 			continue
 		else:
 			correction[i] = new_word
+	elif(i==0 or pos_list[i-1][1] == 'WP' and word_bef in punctuation_list):
+		new_word = interro.change_new1(word,word_after)
+		if(word == new_word):
+			continue
+		else:
+			correction[i] = new_word
+	elif(i==0 or pos_list[i-1][1] == 'WP$' and word_bef in punctuation_list ):
+		new_word = interro.change_new2(word,word_after)
+		if(word == new_word):
+			continue
+		else:
+			correction[i] = new_word
+	elif(i==0 or pos_list[i-1][1] == 'WRB' and word_bef in punctuation_list):
+		new_word = interro.change_new3(word,word_after)
+		if(word == new_word):
+			continue
+		else:
+			correction[i] = new_word
 
-return correction		
-# for k,v in correction.items():
-# 	print("Correction in word no. {} is {}. ".format(k,v))
+
+
+
+#return correction		
+for k,v in correction.items():
+	print("Correction in word no. {} is {}. ".format(k,v))
