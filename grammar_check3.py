@@ -5,15 +5,20 @@ import string
 import sys
 import re
 import nltk
-
+from time import time
+start_time = time()
 from frequency_finder import frequency_finder2
 from frequency_finder import frequency_finder1
-
+print(time()-start_time)
 import verb
+print(time()-start_time)
 # import demo_pro
 import interro
+print(time()-start_time)
 import article
+print(time()-start_time)
 import demopro
+print(time()-start_time)
 
 
 result = string.punctuation

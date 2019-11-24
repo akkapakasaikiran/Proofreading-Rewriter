@@ -19,9 +19,9 @@ def starts_with_vowel_sound(word, pronunciations=cmudict.dict()):
     for syllables in pronunciations.get(word, []):
         return syllables[0][-1].isdigit()
 #def starts_with_vowel_sound(word, pronunciations=cmudict.dict()):
-pronunciations = cmudict.dict()
 
-def sounds_like_a_vowel(word):
+
+def sounds_like_a_vowel(word,pronunciations = cmudict.dict()):
 	for syllables in pronunciations.get('word', []):
 		return(syllables[0][-1].isdigit())
 
