@@ -1,0 +1,23 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'rewrite_app/spell_style.css' %}">
+
+{% if word_list %}
+	<p>
+	{% for word in word_list %}
+	{{word.word_text}}
+	{% endfor %}
+	</p>
+	<table class="spell">
+	{% for word in spell_list %}
+	<tr> <td> {{word}} </td> </tr>
+	{% endfor %}
+	<tr>
+		<td> <form action="{% url 'spell' prev_id %}"><button type="submit">Prev</button></form>
+			<form action="{% url 'spell' next_id %}"><button type="submit">Next</button></form> </td>
+	</tr>
+	</table>
+{% else %}
+	<p>Input sentence empty!</p>
+{% endif %}
+

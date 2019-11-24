@@ -44,9 +44,9 @@ def P(variate):
 	else:
 		return 0.5*damerau_levenshtein_distance(word, variate) + 0.0001*sum(WORDS.values())/WORDS[variate] 
 
-def correction():
+def correction(word):
 	"Most probable spelling corrections for word."
-	possibilities=variations()
+	possibilities=variations(word)
 	# possibilities2 = set()
 	# global word 
 	# real_word = word
@@ -63,7 +63,7 @@ def euclidean_distance(a,b):
 	Y = (keyboard_cartesian[a]['y'] - keyboard_cartesian[b]['y'])**2
 	return math.sqrt(X+Y)
 
-def variations():
+def variations(word):
 	insert = []
 	replace = []
 	delete = []
@@ -129,20 +129,23 @@ input_words = re.findall(r"[\w']+", only_sentences(fullfile))
 input_words = [word.strip("'") for word in input_words] # "in 'my life'" -> in,my,life
 
 
-num_wrong_words=0
-for word_inp in input_words:
-	# print(word_inp)
-	if valid_word(word_inp) : continue
-	num_wrong_words+=1
-	word = word_inp
-	final_suggestions = correction() # works on global variable word
-	print("Input word: {}".format(word_inp))
-	print("Suggestions:{}".format(final_suggestions))
-	print("")
-	# for x in sorted(filter(valid_word,variations()),key=P):
-	#  	print(x, edit_distance(word,x))
-	# print("")
-if(num_wrong_words==0): print("Congrats on writing a completely error free peice of text!")
+def spell_suggestions(words):
+	num_wrong_words=0
+	for word_inp in words:
+		# print(word_inp)
+		if valid_word(word_inp) : continue
+		num_wrong_words+=1
+		word = word_inp
+		final_suggestions = correction(word) # works on global variable word
+		print("Input word: {}".format(word_inp))
+		print("Suggestions:{}".format(final_suggestions))
+		print("")
+		# for x in sorted(filter(valid_word,variations()),key=P):
+		#  	print(x, edit_distance(word,x))
+		# print("")
+	if(num_wrong_words==0): print("Congrats on writing a completely error free peice of text!")
+
+spell_suggestions(input_words)
 
 # word = "ddecidef"
 # print("Input word: {}".format(word))

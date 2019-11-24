@@ -1,0 +1,6 @@
+<form action="{% url 'index' %}" method="post">
+{% csrf_token %}
+	Enter your sentence:
+	<input type="text" name="inp">
+	<input type="submit" value="Submit">
+</form>

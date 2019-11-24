@@ -1,0 +1,15 @@
+table.spell{
+	border-collapse: collapse;
+	border: 1px solid black;
+	float: center;
+	background: green;
+}
+
+tr{
+	border: 1px solid black;
+}
+
+td{
+	text-align:center;
+}
+

@@ -1,0 +1,10 @@
+{% if word_list %}
+	<p>
+	{% for word in word_list %}
+	{{word.word_text}}
+	{% endfor %}
+	</p>
+{% else %}
+	<p>Input sentence empty!</p>
+{% endif %}
+
