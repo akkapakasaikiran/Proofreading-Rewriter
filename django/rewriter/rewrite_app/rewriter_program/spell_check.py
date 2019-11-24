@@ -3,12 +3,20 @@ import sys
 import re
 import enchant
 import math
+import string
 from collections import Counter
 from django.conf import settings
 
 #global variable
 word = ""
 
+result = string.punctuation
+
+result = result.replace(' ', '')
+punctuation_list = []
+for i in range(len(result)):
+    punctuation_list.append(result[i])
+    
 def words(text): return re.findall(r'\w+', text.lower())
 
 big_txt_location = os.path.join(settings.BASE_DIR, 'rewrite_app/rewriter_program/big.txt')
@@ -133,16 +141,24 @@ def damerau_levenshtein_distance(s1, s2):
 
 
 #num_wrong_words=0
-def spell_suggestions(word_inp):
+def spell_suggestions(word_inp_list):
 #for word_inp in input_words:
 	# print(word_inp)
-	if valid_word(word_inp) : return []
-	#num_wrong_words+=1
-	return correction(word_inp)
-	final_suggestions = correction() # works on global variable word
-	print("Input word: {}".format(word_inp))
-	print("Suggestions:{}".format(final_suggestions))
-	print("")
+	correction_dict = {}
+	for i in range(len(word_inp_list)):
+		if valid_word(word_inp_list[i]) :
+			continue
+		elif(word_inp_list[i] in punctuation_list):
+			continue
+		else:
+			lst = correction(word_inp_list[i])
+			correction_dict[i] = lst
+		#num_wrong_words+=1
+	return correction_dict
+		#final_suggestions = correction() # works on global variable word
+		#print("Input word: {}".format(word_inp))
+		#print("Suggestions:{}".format(final_suggestions))
+		#print("")
 	# for x in sorted(filter(valid_word,variations()),key=P):
 	#  	print(x, edit_distance(word,x))
 	# print("")

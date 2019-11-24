@@ -1,10 +1,30 @@
-{% if word_list %}
-	<p>
-	{% for word in word_list %}
-	{{word.word_text}}
-	{% endfor %}
-	</p>
-{% else %}
-	<p>Input sentence empty!</p>
-{% endif %}
+<form action="{% url 'index' %}" method="post" id="sentence">
+	{% csrf_token %}
+	<textarea name="inp" id="ans" oninput="check();" autofocus>{{ sentence }}</textarea>
+	<input type="button" value="Submit" onclick="submitForm()" id="but">
+</form>
+
+<script>
+	function submitForm()
+	{
+		var form = document.getElementById("sentence");
+		var str = document.getElementById("ans").value.length;
+		const hiddenField = document.createElement('input');
+		hiddenField.type = 'hidden';
+		hiddenField.name = 'new_stop';
+		hiddenField.value = str;
+		form.appendChild(hiddenField);
+		form.submit();
+	}
+
+	function check()
+	{
+		var text = document.getElementById("ans");
+		var char = text.value[text.value.length-1];
+		if(char == '.' || char == '!' || char == '?')
+		{
+			submitForm();
+		}
+	}
+</script>
 

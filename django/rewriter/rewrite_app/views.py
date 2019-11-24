@@ -1,20 +1,32 @@
 import logging
+import nltk
 from django.shortcuts import render, get_object_or_404
 
 from .models import Word
-from .rewriter_program.spellcheck import spell_suggestions
+from .rewriter_program.spell_check import spell_suggestions
 
 # Create your views here.
 
 
 def index(request):
-    inp = request.POST['inp']
-    logging.debug(inp)
-    word_list = Word.objects.order_by('word_pos')
-#    spell_list = ['ABC']
-#    spell_list = spell_suggestions(Word.objects.get(pk=1).word_text)
-    context = {'word_list': word_list}
-    return render(request, 'rewrite_app/index.html', context)
+	if 'new_stop' not in request.POST:
+		new_stop = 0
+	else:
+		new_stop = request.POST['new_stop']
+
+	if 'inp' not in request.POST:
+		sentence = ""
+	else:
+		sentence = request.POST['inp']
+	
+	prev_stop = request.session.get('prev_stop', '0')
+	request.session['prev_stop'] = new_stop
+	newint = int(new_stop)
+	prevint = int(prev_stop)
+	sub = sentence[prevint:newint-1]
+	tokens = nltk.word_tokenize(sub)
+	logging.debug(spell_suggestions(tokens))
+	return render(request, 'rewrite_app/index.html', {'prev_stop': new_stop, 'sentence': sentence})
 
 
 def spell(request, word_id):
