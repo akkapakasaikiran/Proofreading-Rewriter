@@ -189,5 +189,5 @@ def spell_suggestions2(word_inp_list,i):
 		correction_dict[i] = lst
 	return correction_dict
 
-test ="This is vry good . I am dong relly goud in this hllo. At this poin we could aleady feel the presure genrated. I was hsppy that we did not get Asthma. This is an imlicit way and not the prefered one."
+#test ="This is vry good . I am dong relly goud in this hllo. At this poin we could aleady feel the presure genrated. I was hsppy that we did not get Asthma. This is an imlicit way and not the prefered one."
 # print(spell_suggestions(nltk.word_tokenize(test)))
