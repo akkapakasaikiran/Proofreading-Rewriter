@@ -19,7 +19,7 @@ import article
 #print(time()-start_time)
 import demopro
 #print(time()-start_time)
-
+import adjorder
 
 result = string.punctuation
 
@@ -36,7 +36,7 @@ vowels = ['a','e','i','o','u'];
 
 #word_string = f.read()
 
-def grammar_checker(word_list)
+def grammar_checker(word_list):
 #word_list = nltk.word_tokenize(word_string);
 	pos_list = nltk.pos_tag(word_list)
 	correction = {}
@@ -55,9 +55,8 @@ def grammar_checker(word_list)
 				correction[i] = new_word 
 		elif(pos_list[i][1][:2] == 'VB'):
 			#print("\n"+word)
-			print("verb ", word)
 			if(word_after in punctuation_list):
-				new_word = verb.changetense2(word_before,word)
+				new_word = verb.changetense2(word_bef,word)
 			else:
 				new_word = verb.changetense3(word_bef,word,word_after)
 			if(word == new_word):
@@ -93,7 +92,10 @@ def grammar_checker(word_list)
 			else:
 				correction[i] = new_word
 
-
+#		print(frequency_finder1("ate","a","orange"))
+#		print(frequency_finder1("ate","the","orange"))
+#		print(frequency_finder1("ate","an","orange"))
 	return correction		
-#for k,v in correction.items():
+#text = "Why is gamora? I ate a apple. These is really bad to see. "
+#for k,v in grammar_checker(nltk.word_tokenize(text)).items():
 #	print("Correction in word no. {} is {}. ".format(k,v))

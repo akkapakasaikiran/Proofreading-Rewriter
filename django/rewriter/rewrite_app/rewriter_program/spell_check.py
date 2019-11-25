@@ -5,6 +5,7 @@ import enchant
 import math
 import string
 import logging
+import nltk
 from collections import Counter
 from django.conf import settings
 from .frequency_finder import frequency_finder1
@@ -153,8 +154,6 @@ def freq(bef,word,aft):
 	elif (aft not in punctuation_list and bef not in punctuation_list):
 		ans = frequency_finder1(bef,word,aft)
 	else : ans = 0
-	logging.debug(ans)
-
 	return ans
 
 
@@ -171,6 +170,7 @@ def spell_suggestions(word_inp_list):
 			aft = word_inp_list[i+1]
 			lst=[x for x in lst if freq(bef,x,aft)>100]
 			correction_dict[i] = lst
+	logging.debug(correction_dict)
 	return correction_dict
 
 
@@ -178,14 +178,16 @@ def spell_suggestions2(word_inp_list,i):
 
 	correction_dict = {}
 	if valid_word(word_inp_list[i]) :
-		continue
+		pass
 	elif(word_inp_list[i] in punctuation_list):
-		continue
+		pass
 	else:
 		lst = correction(word_inp_list[i])
 		bef = word_inp_list[i-1] if i!=0 else '.'
 		aft = word_inp_list[i+1]
-		lst=[x for x in lst if freq(bef,x,aft)>100]
+		lst=[x for x in lst if freq(bef,x,aft)>1000]
 		correction_dict[i] = lst
 	return correction_dict
 
+test ="This is vry good . I am dong relly goud in this hllo. At this poin we could aleady feel the presure genrated. I was hsppy that we did not get Asthma. This is an imlicit way and not the prefered one."
+# print(spell_suggestions(nltk.word_tokenize(test)))
