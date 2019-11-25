@@ -1,19 +1,70 @@
 <form action="{% url 'index' %}" method="post" id="sentence">
 	{% csrf_token %}
-	<textarea name="inp" id="ans" oninput="check();" autofocus>{{ sentence }}</textarea>
-	<input type="button" value="Submit" onclick="submitForm()" id="but">
+	<textarea name="inp" id="ans" oninput="check();" onfocus="foc();" autofocus>{{ sentence }}</textarea>
+	<br>
+	{% for token in tokens %}
+		<input type="button" value="{{ token }}" onclick="getspells( {{ forloop.counter0 }} )">
+	{% endfor %}
+	<p>Suggestions:</p>
+	{% for word in spells %}
+		<input type="button" value="{{ word }}" onclick="change( '{{ word }}' );"> <br>
+	{% endfor %}
+	{% if spells %}
+		<input type="button" value="Ignore" onclick="ignore();">
+	{% endif %}
 </form>
 
 <script>
 	function submitForm()
 	{
 		var form = document.getElementById("sentence");
-		var str = document.getElementById("ans").value.length;
-		const hiddenField = document.createElement('input');
-		hiddenField.type = 'hidden';
-		hiddenField.name = 'new_stop';
-		hiddenField.value = str;
-		form.appendChild(hiddenField);
+		form.submit();
+	}
+
+	function getspells(id)
+	{
+		var form = document.getElementById("sentence");
+
+		const hiddenField2 = document.createElement('input');
+		hiddenField2.type = 'hidden';
+		hiddenField2.name = 'spells';
+		hiddenField2.value = id;
+		form.appendChild(hiddenField2);
+
+		form.submit();
+	}
+
+
+	function change(word)
+	{
+		var form = document.getElementById("sentence");
+
+		const hiddenField2 = document.createElement('input');
+		hiddenField2.type = 'hidden';
+		hiddenField2.name = 'changeid';
+		hiddenField2.value = {{ spellid }};
+		form.appendChild(hiddenField2);
+
+		const hiddenField3 = document.createElement('input');
+		hiddenField3.type = 'hidden';
+		hiddenField3.name = 'change';
+		hiddenField3.value = word;
+		form.appendChild(hiddenField3);
+
+		form.submit();
+		
+	}
+
+	function ignore()
+	{
+		var form = document.getElementById("sentence");
+
+		const hiddenField2 = document.createElement('input');
+		hiddenField2.type = 'hidden';
+		hiddenField2.name = 'ignoreid';
+		hiddenField2.value = {{ spellid }};
+		form.appendChild(hiddenField2);
+
 		form.submit();
 	}
 
@@ -25,6 +76,19 @@
 		{
 			submitForm();
 		}
+	}
+
+	function foc()
+	{
+		var text = document.getElementById("ans");
+		text.value += " ";
+		text.value = text.value.substring(0, text.value.length - 1);
+	}
+
+	function show(id)
+	{
+		var tb = document.getElementById(id);
+		tb.hidden = false;
 	}
 </script>
 

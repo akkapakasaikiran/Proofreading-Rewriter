@@ -1,5 +1,6 @@
 import logging
 import nltk
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 from django.shortcuts import render, get_object_or_404
 
 from .models import Word
@@ -9,24 +10,43 @@ from .rewriter_program.spell_check import spell_suggestions
 
 
 def index(request):
-	if 'new_stop' not in request.POST:
-		new_stop = 0
-	else:
-		new_stop = request.POST['new_stop']
 
 	if 'inp' not in request.POST:
 		sentence = ""
 	else:
 		sentence = request.POST['inp']
-	
-	prev_stop = request.session.get('prev_stop', '0')
-	request.session['prev_stop'] = new_stop
-	newint = int(new_stop)
-	prevint = int(prev_stop)
-	sub = sentence[prevint:newint-1]
-	tokens = nltk.word_tokenize(sub)
-	logging.debug(spell_suggestions(tokens))
-	return render(request, 'rewrite_app/index.html', {'prev_stop': new_stop, 'sentence': sentence})
+
+	if 'spells' not in request.POST:
+		spellid = '-1'
+	else:
+		spellid = request.POST['spells']
+
+	ignore = request.session.get('ignore', [])
+
+	if 'ignoreid' in request.POST:
+		ignore.append(request.POST['ignoreid'])
+		spellid = request.POST['ignoreid']
+		request.session['ignore'] = ignore
+
+	tokens = nltk.word_tokenize(sentence)
+
+	if 'change' in request.POST:
+		logging.debug(request.POST['change'])
+		spellid = request.POST['changeid']
+		tokens[int(spellid)]=request.POST['change']
+		sentence = TreebankWordDetokenizer().detokenize(tokens)
+
+	spells = spell_suggestions(tokens)
+
+	for i in ignore:
+		spells[int(i)] = []
+
+	if int(spellid) not in spells:
+		spells = []
+	else:
+		spells = spells[int(spellid)]
+
+	return render(request, 'rewrite_app/index.html', {'sentence': sentence, 'spells': spells, 'tokens': tokens, 'spellid': spellid})
 
 
 def spell(request, word_id):
