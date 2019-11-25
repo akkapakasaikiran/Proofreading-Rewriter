@@ -21,6 +21,7 @@ def actual_punc(body):
 	sentence_list = []
 	for sentence in l:
 		pos_list = nltk.pos_tag(nltk.word_tokenize(sentence))
+		print(pos_list)
 		pos_list = correct_punctuation(pos_list) # send a sentence to correct_punctuation
 		only_words = [x for (x,y) in pos_list]
 		sentence_list.append(TreebankWordDetokenizer().detokenize(only_words))
@@ -49,4 +50,6 @@ def correct_punctuation(postags):
 
 	return postags
 
-print(actual_punc("Did it really happen."))
+print(actual_punc("my name is anmol ."))
+print(actual_punc("what are you saying."))
+print(actual_punc("Oh ,i see."))

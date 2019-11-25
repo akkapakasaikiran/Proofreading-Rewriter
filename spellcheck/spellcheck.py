@@ -40,14 +40,16 @@ def valid_word(word_inp):
 def P(variate):
 	#print("{}:{}".format(variate,WORDS[variate]/sum(WORDS.values())))
 	if(WORDS[variate]==0):
-		return 0.6*damerau_levenshtein_distance(word,variate)
+		#return 0.6*damerau_levenshtein_distance(word,variate)
+		return 0
 	else:
-		return 0.5*damerau_levenshtein_distance(word, variate) + 0.0001*sum(WORDS.values())/WORDS[variate] 
+		#return 0.5*damerau_levenshtein_distance(word, variate) + 0.0001*sum(WORDS.values())/WORDS[variate] 
+		return WORDS[variate]/sum(WORDS.values())
 
 def correction(word):
 	"Most probable spelling corrections for word."
 	possibilities=variations(word)
-	return list(filter(valid_word,sorted(possibilities, key=P)))
+	return list(filter(valid_word,sorted(possibilities, key=P, reverse=True)))[:5]
 
 def euclidean_distance(a,b):
 	X = (keyboard_cartesian[a]['x'] - keyboard_cartesian[b]['x'])**2

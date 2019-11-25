@@ -59,7 +59,7 @@ def correction(word_inp):
 	# 	possibilities2 = set(list(possibilities2) + list(y)) 
 	# possibilities = set(list(possibilities) + list(possibilities2))
 	# word = real_word
-	return list(filter(valid_word,sorted(possibilities, key=P)))
+	return list(filter(valid_word,sorted(possibilities, key=P,reverse=True)))
 
 def euclidean_distance(a,b):
 	X = (keyboard_cartesian[a]['x'] - keyboard_cartesian[b]['x'])**2

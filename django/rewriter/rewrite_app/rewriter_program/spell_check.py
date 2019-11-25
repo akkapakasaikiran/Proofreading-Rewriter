@@ -4,8 +4,11 @@ import re
 import enchant
 import math
 import string
+import logging
 from collections import Counter
 from django.conf import settings
+from .frequency_finder import frequency_finder1
+from .frequency_finder import frequency_finder2
 
 #global variable
 word = ""
@@ -51,9 +54,11 @@ def valid_word(word_inp):
 def P(variate):
 	#print("{}:{}".format(variate,WORDS[variate]/sum(WORDS.values())))
 	if(WORDS[variate]==0):
-		return 0.6*damerau_levenshtein_distance(word,variate)
+		#return 0.6*damerau_levenshtein_distance(word,variate)
+		return 0
 	else:
-		return 0.5*damerau_levenshtein_distance(word, variate) + 0.0001*sum(WORDS.values())/WORDS[variate] 
+		# return 0.5*damerau_levenshtein_distance(word, variate) + 0.0001*sum(WORDS.values())/WORDS[variate]
+		return  WORDS[variate]/sum(WORDS.values())
 
 def correction(word_inp):
 	"Most probable spelling corrections for word."
@@ -67,7 +72,7 @@ def correction(word_inp):
 	# 	possibilities2 = set(list(possibilities2) + list(y)) 
 	# possibilities = set(list(possibilities) + list(possibilities2))
 	# word = real_word
-	return list(filter(valid_word,sorted(possibilities, key=P)))
+	return list(filter(valid_word,sorted(possibilities, key=P,reverse = True)))[:4]
 
 def euclidean_distance(a,b):
 	X = (keyboard_cartesian[a]['x'] - keyboard_cartesian[b]['x'])**2
@@ -139,11 +144,21 @@ def damerau_levenshtein_distance(s1, s2):
 # input_words = re.findall(r"[\w']+", only_sentences(fullfile))
 # input_words = [word.strip("'") for word in input_words] # "in 'my life'" -> in,my,life
 
+def freq(bef,word,aft):
 
-#num_wrong_words=0
+	if (bef in punctuation_list and aft not in punctuation_list):
+		ans = frequency_finder2(word,aft)
+	elif (aft in punctuation_list and bef not in punctuation_list):
+		ans = frequency_finder2(bef,word)
+	elif (aft not in punctuation_list and bef not in punctuation_list):
+		ans = frequency_finder1(bef,word,aft)
+	else : ans = 0
+	logging.debug(ans)
+
+	return ans
+
+
 def spell_suggestions(word_inp_list):
-#for word_inp in input_words:
-	# print(word_inp)
 	correction_dict = {}
 	for i in range(len(word_inp_list)):
 		if valid_word(word_inp_list[i]) :
@@ -152,20 +167,25 @@ def spell_suggestions(word_inp_list):
 			continue
 		else:
 			lst = correction(word_inp_list[i])
+			bef = word_inp_list[i-1] if i!=0 else '.'
+			aft = word_inp_list[i+1]
+			lst=[x for x in lst if freq(bef,x,aft)>100]
 			correction_dict[i] = lst
-		#num_wrong_words+=1
 	return correction_dict
-		#final_suggestions = correction() # works on global variable word
-		#print("Input word: {}".format(word_inp))
-		#print("Suggestions:{}".format(final_suggestions))
-		#print("")
-	# for x in sorted(filter(valid_word,variations()),key=P):
-	#  	print(x, edit_distance(word,x))
-	# print("")
-#if(num_wrong_words==0): print("Congrats on writing a completely error free peice of text!")
 
-# word = "ddecidef"
-# print("Input word: {}".format(word))
-# print("Suggestions:{}".format(correction()))
-# for x in sorted(filter(valid_word,variations()),key=P):
-# 	print(x, edit_distance(word,x))
+
+def spell_suggestions2(word_inp_list,i):
+
+	correction_dict = {}
+	if valid_word(word_inp_list[i]) :
+		continue
+	elif(word_inp_list[i] in punctuation_list):
+		continue
+	else:
+		lst = correction(word_inp_list[i])
+		bef = word_inp_list[i-1] if i!=0 else '.'
+		aft = word_inp_list[i+1]
+		lst=[x for x in lst if freq(bef,x,aft)>100]
+		correction_dict[i] = lst
+	return correction_dict
+
