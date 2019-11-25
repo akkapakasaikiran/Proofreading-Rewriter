@@ -9,3 +9,7 @@ Example output :
 
 $ Input word: cleand
 $ Suggestions:['cleans', 'clean', 'cleaned']
+
+running spell check django : enter django/rewriter, then run python3 manage.py runserver
+for grammar just run python3 grammarcheck3.py
+for synonym finder enter rewriting tool and run
