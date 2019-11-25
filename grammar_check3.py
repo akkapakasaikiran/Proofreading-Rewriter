@@ -96,6 +96,68 @@ def grammar_checker(word_list):
 #		print(frequency_finder1("ate","the","orange"))
 #		print(frequency_finder1("ate","an","orange"))
 	return correction		
+
+def grammar_checker2(word_list,i):
+#word_list = nltk.word_tokenize(word_string);
+	pos_list = nltk.pos_tag(word_list)
+	correction = {}
+	article_list = ['a',"an"]
+	demo_list = ['this','that','those','these']
+
+		word = word_list[i].lower();
+		word_bef = word_list[i-1]
+		word_after = word_list[i+1]
+		if(pos_list[i][1] == 'DT' and word in article_list):
+			new_word = article.articlechecker(word_bef,word,word_after)
+			if(word == new_word):
+				pass
+			else:
+				correction[i] = new_word 
+		elif(pos_list[i][1][:2] == 'VB'):
+			#print("\n"+word)
+			if(word_after in punctuation_list):
+				new_word = verb.changetense2(word_bef,word)
+			else:
+				new_word = verb.changetense3(word_bef,word,word_after)
+			if(word == new_word):
+				pass
+			else:
+				correction[i] = new_word
+		elif(i==0 or pos_list[i-1][1] == 'WP' and word_bef in punctuation_list):
+			new_word = interro.change_new1(word,word_after)
+			if(word == new_word):
+				pass
+			else:
+				correction[i] = new_word
+		elif(i==0 or pos_list[i-1][1] == 'WP$' and word_bef in punctuation_list ):
+			new_word = interro.change_new2(word,word_after)
+			if(word == new_word):
+				pass
+			else:
+				correction[i] = new_word
+		elif(i==0 or pos_list[i-1][1] == 'WRB' and word_bef in punctuation_list):
+			new_word = interro.change_new3(word,word_after)
+			if(word == new_word):
+				pass
+			else:
+				correction[i] = new_word
+		elif(pos_list[i][1]=='DT' and word in demo_list):
+			if(i==0 or word_bef in punctuation_list):
+				new_word = demopro.change_before(word,word_after)
+			elif(word_after in punctuation_list):
+				new_word = demopro.change_after(word_bef,word)
+
+			if(word == new_word):
+				pass
+			else:
+				correction[i] = new_word
+
+#		print(frequency_finder1("ate","a","orange"))
+#		print(frequency_finder1("ate","the","orange"))
+#		print(frequency_finder1("ate","an","orange"))
+	return correction		
+
+
 #text = "Why is gamora? I ate a apple. These is really bad to see. "
 #for k,v in grammar_checker(nltk.word_tokenize(text)).items():
 #	print("Correction in word no. {} is {}. ".format(k,v))
